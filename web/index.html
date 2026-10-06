@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101b2d"><meta name="description" content="PayPulse AI turns PayPal payment activity into merchant intelligence.">
+  <title>PayPulse AI — Merchant Intelligence</title><link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+<aside class="sidebar">
+  <a class="brand" href="#overview"><span class="brand-mark">P<span>•</span></span><span>PayPulse<span class="brand-ai"> AI</span><small>MERCHANT INTELLIGENCE</small></span></a>
+  <div class="workspace"><span class="avatar">N</span><span><b>Northstar Goods</b><small>Merchant workspace</small></span><span class="chevron">⌄</span></div>
+  <p class="nav-label">WORKSPACE</p>
+  <nav><button class="nav-item active" data-view="overview"><i>◫</i>Overview</button><button class="nav-item" data-view="transactions"><i>▤</i>Transactions<span class="nav-count" id="txn-count">—</span></button><button class="nav-item" data-view="anomalies"><i>⌁</i>Anomalies<span class="nav-count alert-count" id="anomaly-count">—</span></button><button class="nav-item" data-view="customers"><i>♙</i>Customers</button></nav>
+  <p class="nav-label insight-label">INTELLIGENCE</p><button class="nav-item assistant-nav" id="assistant-open"><i>✳</i>AI assistant<span class="online-dot"></span></button>
+  <div class="sidebar-bottom"><div class="connection-card"><div class="connection-head"><span class="online-dot"></span><b id="connection-title">Demo data connected</b></div><small id="connection-copy">Sample transactions · local database</small><button id="sync-button" class="sync-button">↻ <span>Sync PayPal</span></button></div><div class="profile"><span class="avatar profile-avatar">JD</span><span><b>Jordan Davis</b><small>Administrator</small></span><span class="chevron">•••</span></div></div>
+</aside>
+<main class="main">
+  <header class="topbar"><div class="breadcrumbs">Workspace <span>/</span> <b id="breadcrumb">Overview</b></div><div class="top-actions"><span class="live-label"><span class="online-dot"></span><span id="mode-label">DEMO ENVIRONMENT</span></span><button class="icon-button" title="Notifications">♧<em></em></button><span class="top-avatar">JD</span></div></header>
+  <section class="page-heading"><div><div class="eyebrow">TUESDAY, <span id="today"></span> <span class="heading-dot">•</span> GOOD MORNING, JORDAN</div><h1 id="page-title">Merchant overview</h1><p id="page-subtitle">Your payment intelligence, all in one place.</p></div><button class="period-button" id="period-button">◷ <span>Last 7 days</span> <b>⌄</b></button></section>
+  <div id="sync-notice" class="notice hidden"></div>
+  <section class="metric-grid" id="metrics"></section>
+  <section class="overview-grid" id="overview-panels">
+    <article class="panel volume-panel"><div class="panel-head"><div><h2>Payment volume</h2><p>Successful transaction value over the last 7 days</p></div><span class="chart-legend"><i></i> Volume</span></div><div class="volume-total" id="volume-total">$0 <small>USD</small></div><div id="chart" class="chart"></div><div class="chart-days" id="chart-days"></div></article>
+    <article class="panel health-panel"><div class="panel-head"><div><h2>Risk snapshot</h2><p>Signals that may need your attention</p></div><span class="spark-icon">⌁</span></div><div id="risk-snapshot" class="risk-list"></div><button class="text-link" data-go="anomalies">Review flagged payments <span>→</span></button></article>
+  </section>
+  <section class="panel table-panel" id="recent-panel"><div class="panel-head table-heading"><div><h2 id="table-title">Recent transactions</h2><p id="table-caption">The latest activity across your payment account</p></div><button class="view-all" data-go="transactions">View all <span>→</span></button></div><div class="table-wrap"><table><thead><tr><th>TRANSACTION</th><th>CUSTOMER</th><th>DATE &amp; TIME</th><th>AMOUNT</th><th>STATUS</th><th>RISK</th></tr></thead><tbody id="transactions-body"></tbody></table></div><div id="empty-state" class="empty-state hidden">No matching transactions.</div></section>
+  <section class="panel customers-panel hidden" id="customers-panel"><div class="panel-head"><div><h2>Customer retention signals</h2><p>Recency and purchase frequency estimates; prioritize outreach thoughtfully.</p></div></div><div class="table-wrap"><table><thead><tr><th>CUSTOMER</th><th>LAST PURCHASE</th><th>DAYS INACTIVE</th><th>LIFETIME SPEND</th><th>CHURN SIGNAL</th></tr></thead><tbody id="customers-body"></tbody></table></div></section>
+  <footer>PayPulse AI <span>•</span> Read-only analytics · No payments are initiated <span class="footer-right">Data stored locally in SQLite</span></footer>
+</main>
+<div class="assistant-backdrop hidden" id="assistant-backdrop"></div><aside class="assistant-drawer" id="assistant-drawer" aria-label="PayPulse AI assistant"><div class="drawer-head"><div class="assistant-title"><span class="assistant-icon">✳</span><div><b>PayPulse assistant</b><small><span class="online-dot"></span> Ready to analyze</small></div></div><button class="icon-button close-drawer" id="assistant-close" aria-label="Close assistant">×</button></div><div class="assistant-intro"><span class="hello-spark">✳</span><h2>Good morning, Jordan</h2><p>Ask a question about your payments, risk signals, or customer trends.</p></div><div class="suggestions"><button>Show high-risk payments over $200</button><button>Which customers may churn?</button><button>Find unusual transaction fees</button></div><div class="chat-messages" id="chat-messages"><div class="assistant-message">I’m connected to your payment analytics. I can find unusual transactions and customer retention signals. All answers are read-only and cite the matching records.</div></div><form class="chat-form" id="chat-form"><input id="chat-input" placeholder="Ask about your business…" maxlength="1000" autocomplete="off"><button title="Send message" aria-label="Send message">↑</button><small>AI can make mistakes. Verify important decisions.</small></form></aside>
+<div class="toast" id="toast"></div><script src="/assets/app.js" defer></script>
+</body></html>

@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: paypulse-ai
+    runtime: python
+    plan: starter
+    buildCommand: python --version
+    startCommand: python -m app.server
+    healthCheckPath: /api/health
+    envVars:
+      - key: PAYPULSE_HOST
+        value: 0.0.0.0
+      - key: PAYPULSE_DB_PATH
+        value: /var/data/paypulse.db
+      - key: PAYPAL_BASE_URL
+        value: https://api-m.sandbox.paypal.com
+      - key: PAYPULSE_ACCESS_PASSWORD
+        sync: false
+    disk:
+      name: paypulse-data
+      mountPath: /var/data
+      sizeGB: 1
