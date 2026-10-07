@@ -7,3 +7,13 @@ data/*.db-*
 .DS_Store
 /work/
 /outputs/
+venv/
+update_main.py
+make_file.py
+30
+.env
+venv/
+.env
+update_main.py
+make_file.py
+30
