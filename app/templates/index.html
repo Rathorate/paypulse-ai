@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayPulse - Financial Analytics & AI Assistant</title>
+    <style>
+        :root {
+            --bg-dark: #0b0f19;
+            --card-bg: #151c2c;
+            --border-color: #232d42;
+            --primary-blue: #0284c7;
+            --primary-hover: #0369a1;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-green: #10b981;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg-dark); color: var(--text-light); display: flex; height: 100vh; overflow: hidden; }
+
+        /* Sidebar Navigation */
+        .sidebar { width: 240px; background: #0e1422; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 20px 0; }
+        .sidebar-brand { font-size: 1.3rem; font-weight: bold; color: #38bdf8; padding: 0 24px 24px; display: flex; align-items: center; gap: 8px; }
+        .nav-items { list-style: none; display: flex; flex-direction: column; gap: 4px; padding: 0 12px; }
+        .nav-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.95rem; }
+        .nav-item.active a, .nav-item a:hover { background: #1e293b; color: var(--text-light); }
+
+        /* Main Workspace */
+        .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+        .top-header { height: 64px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; background: #0e1422; }
+        .page-title { font-size: 1.1rem; font-weight: 600; }
+        .user-profile { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; }
+        .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--primary-blue); display: flex; align-items: center; justify-content: center; font-weight: bold; }
+
+        /* Dashboard Body */
+        .content-area { padding: 32px; display: flex; flex-direction: column; gap: 24px; max-width: 1400px; width: 100%; margin: 0 auto; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+        .stat-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; }
+        .stat-label { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px; }
+        .stat-value { font-size: 1.6rem; font-weight: 700; color: var(--text-light); }
+        .stat-change { font-size: 0.8rem; color: var(--accent-green); margin-top: 6px; }
+
+        /* Embedded Assistant Layout */
+        .workspace-grid { display: grid; grid-template-columns: 1fr 400px; gap: 24px; height: 580px; }
+        .panel { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; }
+        .panel-header { padding: 16px 20px; border-bottom: 1px solid var(--border-color); font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+
+        /* Chat Component */
+        .chat-stream { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
+        .msg { max-width: 85%; padding: 12px 16px; border-radius: 10px; font-size: 0.9rem; line-height: 1.4; }
+        .msg.bot { background: #1e293b; align-self: flex-start; border: 1px solid var(--border-color); }
+        .msg.user { background: var(--primary-blue); align-self: flex-end; color: #fff; }
+        .chat-input-row { padding: 16px; border-top: 1px solid var(--border-color); display: flex; gap: 10px; background: #0f172a; }
+        .chat-input-row input { flex: 1; background: #1e293b; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 14px; color: #fff; outline: none; }
+        .chat-input-row button { background: var(--primary-blue); color: #fff; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .chat-input-row button:hover { background: var(--primary-hover); }
+
+        /* Table mock */
+        .table-row { display: flex; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--border-color); font-size: 0.88rem; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-brand">⚡ PayPulse</div>
+        <ul class="nav-items">
+            <li class="nav-item active"><a href="#overview">📊 Overview</a></li>
+            <li class="nav-item"><a href="#transactions">💳 Transactions</a></li>
+            <li class="nav-item"><a href="#analytics">📈 Analytics</a></li>
+            <li class="nav-item"><a href="#assistant">🤖 AI Assistant</a></li>
+            <li class="nav-item"><a href="#settings">⚙️ Settings</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+        <div class="top-header">
+            <div class="page-title">Financial Dashboard Overview</div>
+            <div class="user-profile">
+                <span>Victor Ogunyemi</span>
+                <div class="avatar">VO</div>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <!-- Key Performance Metrics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Volume (30D)</div>
+                    <div class="stat-value">₦4,250,800.00</div>
+                    <div class="stat-change">+14.2% from last month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Successful Transactions</div>
+                    <div class="stat-value">1,482</div>
+                    <div class="stat-change">99.4% success rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Pending Settlements</div>
+                    <div class="stat-value">₦185,200.00</div>
+                    <div class="stat-change" style="color: #f59e0b;">3 batches processing</div>
+                </div>
+            </div>
+
+            <!-- Workspace: Analytics Feed + PayPulse AI Panel -->
+            <div class="workspace-grid">
+                <div class="panel">
+                    <div class="panel-header">Recent Activity Log</div>
+                    <div style="overflow-y: auto; flex: 1;">
+                        <div class="table-row"><span>TXN-9021 • Card Payment</span><strong style="color:var(--accent-green)">+₦45,000.00</strong></div>
+                        <div class="table-row"><span>TXN-9020 • Bank Transfer</span><strong style="color:var(--accent-green)">+₦120,000.00</strong></div>
+                        <div class="table-row"><span>TXN-9019 • Payout Batch #12</span><strong style="color:#ef4444">-₦230,000.00</strong></div>
+                        <div class="table-row"><span>TXN-9018 • Webhook Retry #2</span><strong style="color:var(--accent-green)">+₦18,500.00</strong></div>
+                        <div class="table-row"><span>TXN-9017 • POS Terminal Settlement</span><strong style="color:var(--accent-green)">+₦310,000.00</strong></div>
+                    </div>
+                </div>
+
+                <!-- Embedded PayPulse AI Assistant -->
+                <div class="panel">
+                    <div class="panel-header">PayPulse AI Copilot</div>
+                    <div class="chat-stream" id="chatBox">
+                        <div class="msg bot">Hello Victor! I'm your PayPulse financial assistant. Ask me about transaction volume, failed webhooks, or financial summaries.</div>
+                    </div>
+                    <div class="chat-input-row">
+                        <input type="text" id="userInput" placeholder="Ask PayPulse..." onkeypress="if(event.key==='Enter') sendMsg()">
+                        <button onclick="sendMsg()">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function sendMsg() {
+            const input = document.getElementById('userInput');
+            const chatBox = document.getElementById('chatBox');
+            const msg = input.value.trim();
+            if(!msg) return;
+
+            // Append user message
+            chatBox.innerHTML += `<div class="msg user">${escapeHtml(msg)}</div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Loading state
+            const loadingId = 'load-' + Date.now();
+            chatBox.innerHTML += `<div class="msg bot" id="${loadingId}"><em>Thinking...</em></div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ message: msg })
+                });
+                const data = await res.json();
+                const loadingElem = document.getElementById(loadingId);
+                if (loadingElem) {
+                    loadingElem.innerHTML = escapeHtml((data.response || data.reply || data.message || data.text));
+                }
+            } catch (err) {
+                const loadingElem = document.getElementById(loadingId);
+                if (loadingElem) {
+                    loadingElem.innerHTML = `<span style="color: #ef4444;">Error connecting to API service.</span>`;
+                }
+            }
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+    </script>
+</body>
+</html>
