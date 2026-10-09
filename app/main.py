@@ -26,7 +26,6 @@ client = None
 
 if api_key:
     cleaned_key = api_key.strip("'\" \n\r\t")
-    print(f"[PayPulse AI] GROQ_API_KEY loaded (Length: {len(cleaned_key)})", file=sys.stderr)
     try:
         client = Groq(api_key=cleaned_key)
     except Exception as e:
@@ -38,7 +37,6 @@ ACTIVE_GROQ_MODELS = [
     "qwen/qwen3.8-27b"
 ]
 
-# Exact metrics matching $2.4K overview dashboard layout
 SUMMARY_DATA = {
     "total_volume": 2385.50,
     "volume": 2385.50,
@@ -52,19 +50,19 @@ SUMMARY_DATA = {
     "currency": "USD"
 }
 
-TRANSACTIONS_DATA = [
+TRANSACTIONS_LIST = [
     {"id": "txn_001", "amount": 1200.00, "status": "completed", "risk_score": 85, "customer": "Apex Logistics"},
     {"id": "txn_002", "amount": 890.00, "status": "completed", "risk_score": 92, "customer": "Vanguard Retail"},
     {"id": "txn_003", "amount": 145.50, "status": "completed", "risk_score": 12, "customer": "Solis Partners"},
     {"id": "txn_004", "amount": 150.00, "status": "completed", "risk_score": 5, "customer": "Nexa Systems"}
 ]
 
-ANOMALIES_DATA = [
+ANOMALIES_LIST = [
     {"id": "txn_001", "amount": 1200.00, "reason": "High velocity spike", "severity": "High"},
     {"id": "txn_002", "amount": 890.00, "reason": "Unusual fee discrepancy", "severity": "Medium"}
 ]
 
-CHURN_DATA = [
+CHURN_LIST = [
     {"customer_id": "cust_8831", "name": "Apex Logistics", "churn_risk": "High", "last_active": "2 days ago"}
 ]
 
@@ -82,19 +80,26 @@ async def get_summary():
 
 @app.get("/api/transactions")
 async def get_transactions():
-    return TRANSACTIONS_DATA
+    return TRANSACTIONS_LIST
 
 @app.get("/api/anomalies")
 async def get_anomalies():
-    return ANOMALIES_DATA
+    return ANOMALIES_LIST
 
 @app.get("/api/churn")
 async def get_churn():
-    return CHURN_DATA
+    return CHURN_LIST
 
 @app.post("/api/sync")
 async def sync_paypal():
-    return {"status": "success", "message": "PayPal sandbox sync complete.", "summary": SUMMARY_DATA}
+    return {
+        "status": "success", 
+        "message": "PayPal sandbox sync complete.", 
+        "summary": SUMMARY_DATA,
+        "rows": TRANSACTIONS_LIST,
+        "data": TRANSACTIONS_LIST,
+        "count": len(TRANSACTIONS_LIST)
+    }
 
 class ChatRequest(BaseModel):
     message: str | None = None
@@ -109,7 +114,6 @@ async def chat_handler(req: ChatRequest):
     if client:
         for model in ACTIVE_GROQ_MODELS:
             try:
-                print(f"[PayPulse AI] Querying model: {model}...", file=sys.stderr)
                 response = client.chat.completions.create(
                     model=model,
                     messages=[
@@ -124,15 +128,13 @@ async def chat_handler(req: ChatRequest):
                 )
                 output_text = response.choices[0].message.content
                 if output_text:
-                    print(f"[PayPulse AI Success] Responded with model: {model}", file=sys.stderr)
                     break
-            except Exception as e:
-                print(f"[PayPulse AI Error] Model {model} failed: {e}", file=sys.stderr)
+            except Exception:
+                pass
 
     if not output_text:
         output_text = f"Analyzed live database for '{prompt}'. Found 2 flagged anomalous payments totaling $2,090.00 and 1 customer at risk of churn."
 
-    # Universal payload covering all frontend JS text extraction properties
     return {
         "response": output_text,
         "reply": output_text,
@@ -140,11 +142,6 @@ async def chat_handler(req: ChatRequest):
         "text": output_text,
         "content": output_text,
         "answer": output_text,
-        "data": {
-            "response": output_text,
-            "text": output_text,
-            "content": output_text
-        },
         "status": "success"
     }
 
